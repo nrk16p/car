@@ -47,21 +47,30 @@ def parse_title(title):
     return year, brand, model, vehicle_type
 
 
+import shutil
+
 def setup_driver(headless=True):
     """Setup Chrome driver with basic options"""
     options = Options()
-    
+
     if headless:
-        options.add_argument("--headless=new")  # newer headless mode
+        options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
-    
-    
+
+    # Manually set the path to the Chrome binary if it's found
+    chrome_path = shutil.which("google-chrome") or shutil.which("google-chrome-stable")
+    if chrome_path:
+        options.binary_location = chrome_path
+    else:
+        print("❌ Google Chrome binary not found in PATH.")
+        return None
+
     try:
         driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()), 
+            service=Service(ChromeDriverManager().install()),
             options=options
         )
         return driver
