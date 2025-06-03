@@ -222,7 +222,7 @@ def main():
     # Configuration
     START_PAGE = 1
     END_PAGE = 10
-    HEADLESS = False  # Set to True to run in background
+    HEADLESS = True  # Set to True to run in background
     OUTPUT_FILE = "one2car_data.csv"
     
     print("🚗 Car Scraper Starting...")
