@@ -61,6 +61,10 @@ def setup_driver(headless=True):
     options.add_argument("--window-size=1920,1080")
 
     # Manually set the path to the Chrome binary if it's found
+    import os
+    print("🔍 PATH seen by Jenkins:", os.environ.get("PATH"))
+    print("🔍 Is google-chrome in PATH?", shutil.which("google-chrome"))
+
     chrome_path = shutil.which("google-chrome") or shutil.which("google-chrome-stable")
     if chrome_path:
         options.binary_location = "/usr/bin/google-chrome"
