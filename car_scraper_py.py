@@ -63,7 +63,8 @@ def setup_driver(headless=True):
     # Manually set the path to the Chrome binary if it's found
     chrome_path = shutil.which("google-chrome") or shutil.which("google-chrome-stable")
     if chrome_path:
-        options.binary_location = chrome_path
+        options.binary_location = "/usr/bin/google-chrome"
+
     else:
         print("❌ Google Chrome binary not found in PATH.")
         return None
