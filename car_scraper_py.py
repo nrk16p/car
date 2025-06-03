@@ -58,12 +58,6 @@ def setup_driver(headless=True):
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
     
-    # Try to locate Chrome binary explicitly
-    chrome_path = shutil.which("google-chrome") or shutil.which("google-chrome-stable")
-    if chrome_path:
-        options.binary_location = chrome_path
-    else:
-        print("❌ Google Chrome binary not found in PATH.")
     
     try:
         driver = webdriver.Chrome(
