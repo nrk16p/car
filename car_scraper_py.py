@@ -9,6 +9,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import time
+import shutil  # Add this at the top
+
 
 # -------- Helper Functions --------
 
@@ -44,17 +46,24 @@ def parse_title(title):
     
     return year, brand, model, vehicle_type
 
+
 def setup_driver(headless=True):
     """Setup Chrome driver with basic options"""
     options = Options()
     
     if headless:
-        options.add_argument("--headless")
-    
+        options.add_argument("--headless=new")  # newer headless mode
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
+    
+    # Try to locate Chrome binary explicitly
+    chrome_path = shutil.which("google-chrome") or shutil.which("google-chrome-stable")
+    if chrome_path:
+        options.binary_location = chrome_path
+    else:
+        print("❌ Google Chrome binary not found in PATH.")
     
     try:
         driver = webdriver.Chrome(
@@ -63,7 +72,7 @@ def setup_driver(headless=True):
         )
         return driver
     except Exception as e:
-        print(f"Error setting up driver: {e}")
+        print(f"❌ Error setting up driver: {e}")
         return None
 
 def scrape_single_page(driver, page_num, max_retries=3):
