@@ -81,10 +81,8 @@ def setup_driver(headless=True):
 
     # Try to create the driver
     try:
-        driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
-            options=options
-        )
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager(version="114.0.5735.90").install()),options=options)
+
         return driver
     except Exception as e:
         print(f"❌ Error setting up driver: {e}")
