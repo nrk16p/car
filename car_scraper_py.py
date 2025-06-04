@@ -49,30 +49,37 @@ def parse_title(title):
 
 import shutil
 
+import shutil
+import os
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
 def setup_driver(headless=True):
-    """Setup Chrome driver with basic options"""
+    """Setup Chrome driver with specified options"""
     options = Options()
 
     if headless:
-        options.add_argument("--headless=new")
+        options.add_argument("--headless=new")  # New headless mode
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
 
-    # Manually set the path to the Chrome binary if it's found
-    import os
-    print("🔍 PATH seen by Jenkins:", os.environ.get("PATH"))
-    print("🔍 Is google-chrome in PATH?", shutil.which("google-chrome"))
-
+    # Log and locate chrome binary
     chrome_path = shutil.which("google-chrome") or shutil.which("google-chrome-stable")
-    if chrome_path:
-        options.binary_location = "/usr/bin/google-chrome"
 
+    print("🔍 PATH seen by Jenkins:", os.environ.get("PATH"))
+    print("🔍 chrome_path found:", chrome_path)
+
+    if chrome_path:
+        options.binary_location = chrome_path
     else:
         print("❌ Google Chrome binary not found in PATH.")
         return None
 
+    # Try to create the driver
     try:
         driver = webdriver.Chrome(
             service=Service(ChromeDriverManager().install()),
@@ -82,6 +89,7 @@ def setup_driver(headless=True):
     except Exception as e:
         print(f"❌ Error setting up driver: {e}")
         return None
+
 
 def scrape_single_page(driver, page_num, max_retries=3):
     """Scrape one page and return data"""
