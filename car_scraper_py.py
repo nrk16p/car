@@ -12,7 +12,7 @@ options.add_argument('--disable-dev-shm-usage')
 options.add_argument("--window-size=1920,1080")
 
 # Fallback path for Chrome
-chrome_path = shutil.which("google-chrome") or shutil.which("google-chrome-stable") or "/usr/bin/google-chrome"
+chrome_path = "/usr/bin/google-chrome-stable"
 print("🔍 Detected Chrome path:", chrome_path)
 
 # ตรวจสอบว่า path มีอยู่จริงและสามารถ execute ได้
